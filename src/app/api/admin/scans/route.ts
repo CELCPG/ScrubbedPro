@@ -95,3 +95,39 @@ export async function POST(request: NextRequest) {
 
   return NextResponse.json({ scan }, { status: 201 })
 }
+
+/**
+ * PATCH /api/admin/scans — bulk action on scans.
+ * Body: { action: 'retry_failed' | 'cancel_stuck', scan_ids: string[] }
+ */
+export async function PATCH(request: NextRequest) {
+  const supabase = createClient()
+  const body = await request.json()
+  const { action, scan_ids } = body
+
+  if (!action || !scan_ids?.length) {
+    return NextResponse.json({ error: 'action and scan_ids required' }, { status: 400 })
+  }
+
+  let update: Record<string, unknown> = {}
+
+  if (action === 'retry_failed') {
+    update = { status: 'queued', started_at: new Date().toISOString() }
+  } else if (action === 'cancel_stuck') {
+    update = { status: 'canceled' }
+  } else {
+    return NextResponse.json({ error: 'Invalid action' }, { status: 400 })
+  }
+
+  const { error } = await supabase
+    .from('scans')
+    .update(update)
+    .in('id', scan_ids)
+    .eq('status', action === 'retry_failed' ? 'failed' : 'running')
+
+  if (error) {
+    return NextResponse.json({ error: error.message }, { status: 500 })
+  }
+
+  return NextResponse.json({ success: true, updated: scan_ids.length })
+}

@@ -80,6 +80,35 @@ export default function DashboardPage() {
 
   return (
     <div className="p-8">
+      {/* Trust strip */}
+      <div className="flex items-center gap-4 mb-6 flex-wrap">
+        <div className="flex items-center gap-1.5 text-xs text-gray-500">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-safe">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+          CCPA &amp; GDPR compliant
+        </div>
+        <div className="flex items-center gap-1.5 text-xs text-gray-500">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-safe">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+          </svg>
+          Never shares your data
+        </div>
+        <div className="flex items-center gap-1.5 text-xs text-gray-500">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-safe">
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.15 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.06 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 8.91a16 16 0 0 0 6 6l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
+          </svg>
+          No government ID required
+        </div>
+        <div className="flex items-center gap-1.5 text-xs text-gray-500">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-safe">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+          Removed listings stay off
+        </div>
+      </div>
+
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>

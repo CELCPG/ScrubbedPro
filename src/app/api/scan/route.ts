@@ -3,6 +3,9 @@ import { NextResponse } from 'next/server'
 import { logger } from '@/lib/logger'
 import { audit } from '@/lib/audit'
 
+const SCANNER_URL = process.env.SCANNER_API_URL
+const SCANNER_SECRET = process.env.SCANNER_WEBHOOK_SECRET
+
 /**
  * GET /api/scan — list the user's scan history.
  */
@@ -73,6 +76,39 @@ export async function POST(request: Request) {
   if (scanError) {
     logger.error({ err: scanError, user_id: user.id }, 'failed to create scan record')
     return NextResponse.json({ error: scanError.message }, { status: 500 })
+  }
+
+  // Trigger the scanner service (fire-and-forget, scanner writes back to Supabase)
+  if (SCANNER_URL && SCANNER_SECRET) {
+    try {
+      const scannerRes = await fetch(`${SCANNER_URL}/scan`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Scanner-Secret': SCANNER_SECRET,
+        },
+        body: JSON.stringify({
+          scan_id: scan.id,
+          person: {
+            first_name: person.first_name,
+            last_name: person.last_name,
+            current_city: person.current_city,
+            current_state: person.current_state,
+            previous_cities: person.previous_cities || [],
+            previous_states: person.previous_states || [],
+            phone_numbers: person.phone_numbers || [],
+            email_addresses: person.email_addresses || [],
+            relatives: person.relatives || [],
+          },
+        }),
+      })
+      if (!scannerRes.ok) {
+        logger.error({ status: scannerRes.status, scan_id: scan.id }, 'scanner service rejected scan')
+      }
+    } catch (err) {
+      // Non-fatal: scanner might be temporarily down; it can pick up queued scans
+      logger.error({ err, scan_id: scan.id }, 'failed to notify scanner service')
+    }
   }
 
   await audit({

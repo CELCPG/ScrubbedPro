@@ -7,6 +7,8 @@ const NAV_ITEMS = [
   { href: '/admin', label: 'Overview' },
   { href: '/admin/users', label: 'Users' },
   { href: '/admin/scans', label: 'Scans' },
+  { href: '/admin/removals', label: 'Removals' },
+  { href: '/admin/system', label: 'System' },
 ]
 
 export function AdminNav() {

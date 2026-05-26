@@ -194,20 +194,40 @@ export default function ScanPage() {
           </button>
         </Card>
 
+        <Card className="mt-4 border border-blue/20 bg-blue/5">
+          <div className="flex items-start gap-3">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-blue mt-0.5 shrink-0">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            </svg>
+            <div>
+              <p className="text-xs font-semibold text-navy">Your legal rights — we protect them</p>
+              <p className="text-xs text-gray-600 mt-1 leading-relaxed">
+                You have the right to request removal under CCPA (California), CDPA (Virginia),
+                CPA (Colorado), and similar state laws. We submit only your name and city
+                to brokers — never your SSN, driver&apos;s license, or financial information,
+                even when brokers request it.
+              </p>
+            </div>
+          </div>
+        </Card>
+
         <Card className="mt-4">
           <h2 className="text-base font-medium text-navy mb-3">What we&apos;ll do</h2>
           <ol className="space-y-3 text-sm text-gray-600">
             {[
-              'Search 200+ data broker sites for listings matching your information',
-              'Score the match confidence and exposure risk for each listing',
-              'Build a removal queue prioritized by robocall risk',
-              'Update your dashboard with the complete report',
-            ].map((step, i) => (
+              { step: 'Search 200+ broker sites', detail: 'Spokeo, Whitepages, BeenVerified, Intelius + 195 more' },
+              { step: 'Score match confidence & risk', detail: 'We verify it\'s really you before flagging a listing' },
+              { step: 'Build your removal queue', detail: 'Prioritized by robocall risk and broker response time' },
+              { step: 'Email you when done', detail: 'Full report with what was found and what happens next' },
+            ].map((item, i) => (
               <li key={i} className="flex items-start gap-3">
                 <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-navy text-white text-xs">
                   {i + 1}
                 </span>
-                {step}
+                <div>
+                  <span className="font-medium text-navy">{item.step}</span>
+                  <span className="text-gray-400"> — {item.detail}</span>
+                </div>
               </li>
             ))}
           </ol>

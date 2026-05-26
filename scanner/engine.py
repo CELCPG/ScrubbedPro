@@ -14,8 +14,11 @@ from .parser import parse_broker_response
 from .reporter import build_report
 from .notifier import Notifier
 
-# Import broker templates — each returns a scraper instance
-# from .brokers.templates import spokeo, whitepages, etc.
+from .brokers.templates import (
+    SpokeoScraper, WhitepagesScraper, BeenVerifiedScraper,
+    InteliusScraper, RadarisScraper, PeopleFinderScraper,
+    InstantCheckmateScraper, MyLifeScraper,
+)
 
 
 async def load_broker_config(path: str) -> list[dict]:
@@ -198,11 +201,22 @@ class ScanEngine:
 
     def _get_scraper(self, broker: dict):
         """
-        Return an initialized scraper for the given broker.
-        Currently uses generic BaseScraper; swap for broker-specific
-        template scrapers in Phase 3.
+        Return the appropriate broker-specific scraper instance.
+        Falls back to GenericScraper for unknown brokers.
         """
-        return GenericScraper(broker)
+        scraper_map = {
+            'spokeo': SpokeoScraper,
+            'whitepages': WhitepagesScraper,
+            'beenverified': BeenVerifiedScraper,
+            'intelius': InteliusScraper,
+            'radaris': RadarisScraper,
+            'peoplefinder': PeopleFinderScraper,
+            'instantcheckmate': InstantCheckmateScraper,
+            'mylife': MyLifeScraper,
+        }
+        broker_id = broker.get('id', '')
+        scraper_cls = scraper_map.get(broker_id, GenericScraper)
+        return scraper_cls(broker)
 
 
 class GenericScraper(BaseScraper):

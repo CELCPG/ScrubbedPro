@@ -1,0 +1,5 @@
+# Scrubbed.Pro — Scanner requirements
+playwright>=1.47.0
+aiohttp>=3.10.0
+pyyaml>=6.0.2
+python-dotenv>=1.0.1

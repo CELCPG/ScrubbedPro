@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Scrubbed.Pro — global styles */
+@layer base {
+  h1, h2, h3, h4 {
+    @apply text-navy font-medium tracking-tight;
+  }
+}
+
+@layer utilities {
+  /* Mono text for report IDs, hashes, etc. */
+  .font-mono {
+    font-family: 'JetBrains Mono', Menlo, monospace;
+  }
+}
